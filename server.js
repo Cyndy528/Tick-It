@@ -3,6 +3,7 @@ var express = require ('express'),
 	app = express(), 
 	bodyParser = require('body-parser'); 
 	mongoose = require('mongoose'); 
+	hbs = require('hbs'); 
 
 // configure body-parser (for form data)
 app.use(bodyParser.urlencoded({ extended: true})); 
