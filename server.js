@@ -15,7 +15,11 @@ app.use(express.static(__dirname +'/public'));
 app.set('view engine', 'hbs'); 
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost/ticket-app');
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/ticket-app'
+);
 
 // require Ticket model
 var Ticket = require('./models/ticket');
@@ -42,11 +46,6 @@ app.get('/api/tickets', function (req, res) {
 	 
 }); 
 
-mongoose.connect(
-  process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost/YOUR_LOCAL_DATABASE_NAME'
-);
 
 // start server on localhost:3000 
 app.listen(process.env.PORT || 3000); 
