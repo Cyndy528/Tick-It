@@ -11,7 +11,7 @@ $(function(){
 		{ ticket: 'Visitors Coming', message: 'Offices needed for guests'}
 	]; 
 
- 	// AJAX call to GET all tickets 
+ 	// AJAX call to GET all tickets  
 	$.get('/api/tickets', function (data) {
 		allTickets = data.tickets; 
 
