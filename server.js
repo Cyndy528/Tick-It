@@ -15,7 +15,19 @@ app.set('view engine', 'hbs');
 // HOMEPAGE ROUTE
 
 app.get('/', function (req, res){
-	res.send('Tick-it!'); 
+	res.render('index'); 
+}); 
+
+// API ROUTES
+
+// test data 
+var allTickets = [
+	{ ticket: 'Need help', message: 'Computer equipment is broken'}, 
+	{ ticket: 'Visitors Coming', message: 'Offices needed for guests'}
+];
+
+app.get('/api/tickets', function (req, res) {
+	res.json({ tickets: allTickets}); 
 }); 
 
 // start server on localhost:3000 

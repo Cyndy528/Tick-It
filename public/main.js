@@ -5,12 +5,6 @@ $(function(){
 	var template = Handlebars.compile(source); 
 
 
-	// array of test data
-	var allTickets = [
-		{ ticket: 'Need help', message: 'Computer equipment is broken'}, 
-		{ ticket: 'Visitors Coming', message: 'Offices needed for guests'}
-	]; 
-
  	// AJAX call to GET all tickets  
 	$.get('/api/tickets', function (data) {
 		allTickets = data.tickets; 
