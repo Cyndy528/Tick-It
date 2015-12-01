@@ -41,8 +41,11 @@ app.get('/api/tickets', function (req, res) {
 	 
 }); 
 
-// start server on localhost:3000 
-app.listen(process.env.PORT || 3000), function(){
-	console.log('server started'); 
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/YOUR_LOCAL_DATABASE_NAME'
+);
 
-}); 
+// start server on localhost:3000 
+app.listen(process.env.PORT || 3000); 
