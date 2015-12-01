@@ -42,7 +42,7 @@ app.get('/api/tickets', function (req, res) {
 }); 
 
 // start server on localhost:3000 
-app.listen(3000, function(){
+app.listen(process.env.PORT || 3000), function(){
 	console.log('server started'); 
 
 }); 
