@@ -11,8 +11,11 @@ $(function(){
 		{ ticket: 'Visitors Coming', message: 'Offices needed for guests'}
 	]; 
 
-	var ticketsHtml = template ({
-		tickets: allTickets
-	});
-	$('#tickets-list').append(ticketsHtml); 
+ 	// AJAX call to GET all tickets 
+	$.get('/api/tickets', function (data) {
+		allTickets = data.tickets; 
+
+		var ticketsHtml = template ({ tickets: allTickets});
+		$('#tickets-list').append(ticketsHtml); 
+	}); 
 }); 
