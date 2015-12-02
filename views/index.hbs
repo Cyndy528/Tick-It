@@ -11,10 +11,9 @@
   <!-- custom styles -->
   <link type="text/css" rel="stylesheet" href="main.css">
 
-</head>
-<body>
-  <!-- navbar -->
-    <nav class="navbar navbar-inverse">
+<!-- navbar -->
+
+  <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -38,7 +37,7 @@
     </nav>
 
 
-<!-- <template name="navbar_staff"> -->
+{{#if currentUser}}
   <nav class="navbar navbar-inverse">
       <div class="container">
         <div class="navbar-header">
@@ -63,14 +62,22 @@
                       </ul>
         </li>
           </ul>
+          {{/if}}
         </div><!--/.nav-collapse -->
       </div>
     </nav>
 
+<!-- login  -->
 
-  <!-- login -->
-  {{#if currentUser}}
-    <div class="panel panel-default panel-login">
+<!-- signup.hbs -->
+<div class = "row">
+    <div class="col-md-6">
+      <div class="thumbnail">
+<form method="POST" action="/signup">
+
+
+    {{#if currentUser}}
+        <div class="panel panel-default panel-login">
         <div class="panel-heading">
             <h3 class="panel-title">Welcome Back</h3>
         </div>
@@ -82,8 +89,8 @@
             </form>
         </div>
     </div>
-  {{else}}
-  <div class="panel panel-default panel-login">
+    {{else}}
+    <div class="panel panel-default panel-login">
         <div class="panel-heading">
             <h3 class="panel-title">Login</h3>
         </div>
@@ -126,11 +133,25 @@
                 <a href="#" class="login-link">Log In</a>
             </form>
         </div>
+            </div>
+            </div>
+                </div>
     </div>
     {{/if}}
+    <div class="container">
+        <hr>
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                <p>Copyright &copy; Tick-it!</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+</form>
 
-
-  <!-- jquery -->
+<!-- jquery -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 
   <!-- bootstrap js -->

@@ -5,7 +5,6 @@ var mongoose = require('mongoose'),
 var UserSchema = new Schema({
 	username: String, 
 	password: String, 
-
 	tickets: [{
 		type: Schema.Types.ObjectId, 
 		ref: 'Ticket'
