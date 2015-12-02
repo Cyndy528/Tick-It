@@ -30,6 +30,9 @@ app.get('/', function (req, res){
 	res.render('index'); 
 }); 
 
+app.get('/user', function (req, res){
+	res.render('user'); 
+});
 // API ROUTES 
 
 // get all tickets 
@@ -38,7 +41,7 @@ app.get('/api/tickets', function (req, res) {
 });
 
 // create a ticket 
-app.post('/api/users/:id/tickets', function (req, res) {
+app.post('/api/tickets', function (req, res) {
 	db.User.findById( req.params.id, function (err, user) {
 			if (err); 
 			// add ticket to array 
@@ -129,7 +132,7 @@ app.post('/api/users', function(req, res) {
 
 
 // login 
-app.post('/api/login', function (req, res) {
+app.post('/login', function (req, res) {
 	var user = req.body;
 	User.authenticate(user.email, user.password, function (err, authUser) {
 		console.log("error, authUser", err, authUser);
@@ -142,11 +145,34 @@ app.post('/api/login', function (req, res) {
 	});
 });
 
+
+//validations
+// $('#signUpForm').validate({
+// rules: {
+//   username: {
+//         required: true,
+//         email: true
+//       },
+//   password: {
+//         required: true,
+//         minlength: 6
+//       },
+//   password2: {
+//         required: true,
+//         minlength: 6,
+//         equalTo: '#inputPassword'
+
+//       }
+
+//       }
+
+//   });
+
 // log out 
-app.get('/api/logout', function (req, res) {
+// app.get('/logout', function (req, res) {
 	// send back message 
-	res.json({ msg: "You have logged out!" });
-});
+	// res.json({ msg: "You have logged out!" });
+// });
 
 
 // start server on localhost:3000 
