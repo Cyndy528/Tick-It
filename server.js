@@ -30,13 +30,93 @@ app.get('/', function (req, res){
 	res.render('index'); 
 }); 
 
-// API ROUTES
 
-// test data 
-// var allTickets = [
-// 	{ ticket: 'Need help', message: 'Computer equipment is broken'}, 
-// 	{ ticket: 'Visitors Coming', message: 'Offices needed for guests'}
-// ];
+//route for creating a user
+app.post('/api/users', function(req, res) {
+	var user = req.body;
+	db.User.createSecure(user, function(err, user) {
+		if (err) {
+			console.log(err);
+			res.status(404).send("<p>Error</p>");
+		} else {
+			console.log("user is: " + user);
+			res.json(user);
+	}
+	});
+});
+
+//route for check if current user
+app.get('/api/current-user', function (req, res) {
+	console.log("found current user");
+	res.json(user);
+});
+
+//route for logging in
+app.post('/api/login', function (req, res) {
+	var user = req.body;
+	User.authenticate(user.email, user.password, function (err, authUser) {
+		console.log("error, authUser", err, authUser);
+		if (!authUser) {
+			res.status(404).send("<p>Error</p>");
+		} else {	
+			res.json(authUser);
+		}
+	});
+});
+
+//route for logging out
+app.get('/api/logout', function (req, res) {
+	res.json({ msg: "User logged out successfully" });
+});
+
+//route for creating a ticket
+app.post('/api/users/:id/tickets', function (req, res) {
+	db.User.findById( req.params.id, function (err, user) {
+			if (err) console.log(err);
+			user.tickets.push(req.body);
+			var tickets = user.tickets[user.tickets.length -1];
+			console.log("ticket is: ", ticket);
+			user.save(function (err) {
+				if (err) console.log(err);
+				console.log("user is: ", user);
+				res.json(ticket);
+
+			});
+					
+		
+	});	
+});
+
+//route for modifying the ticket
+app.put('/api/users/:userid/tickets/:id', function (req, res) {
+	db.User.findById( req.params.userid, function (err, user) {
+		if (err) console.log(err);
+		console.log("user is", user);
+		console.log("req.body is: " + req.body.comment);
+		user.tickets.id(req.params.id).completed = true;
+		user.tickets.id(req.params.id).comment = req.body.comment;
+		user.save(function (err) {
+			if (err) console.log(err);
+			console.log("now user is: ", user);
+			res.json(user);
+		});
+	});
+});
+
+
+//route for deleting a ticket
+app.delete('/api/users/:userid/tickets/:id', function (req, res) {
+	db.User.findById( req.params.userid, function (err, user) {
+		console.log("user is: ", user);
+		user.tickets.id(req.params.id).remove();
+		user.save(function (err) {
+			if (err) console.log(err);
+			console.log("ticket has been deleted, now user is: ", user);
+			res.json(user);
+		});
+	});
+});
+
 
 app.get('/api/tickets', function (req, res) {
 	Ticket.find(function(err, allTickets){
@@ -45,6 +125,7 @@ app.get('/api/tickets', function (req, res) {
 	});
 	 
 }); 
+
 
 
 // start server on localhost:3000 

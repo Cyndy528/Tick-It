@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+<nav class="navbar navbar-fixed-top navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <form class="navbar-form navbar-left" role="search">
+      </form>
+      <ul class="nav navbar-nav navbar-form navbar-right">
+
+      <!-- log in form -->
+        <form class="form-inline pull-right not-logged-in" id="log-in">
+          <div class="form-group">
+            <label class="sr-only" for="email">Email address</label>
+            <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <label class="sr-only" for="password">Password</label>
+            <input type="password" name="password" class="form-control" id="password" placeholder="Password">
+          </div>
+        </form>
+        <!-- log out button -->
+        <form class="form-inline pull-right logged-in">
+        <button type="submit" class="btn btn-default">Log in</button>
+          <button type="submit" class="btn btn-default" id="log-out">Log Out</button>
+        </form>
+      </ul>
+
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
+
+</head>
+<body>
+
+
+  <!-- heading -->
+  <div class="page-header">
+  <!-- show if owner -->
+    <div class="container text-center owner">
+        <h1>Welcome!</h1>
+
+  <!-- input forms -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
+        <!-- show if user -->
+        <form class="form-group owner input" id="new-ticket">
+            <input type="text" class="form-control" id="new-ticket-input" data-id="\{{> user._id}}" rows="1" placeholder="Enter Ticket Request" name="description" aria-describedby="basic-addon2">
+            <span class="form-group-btn">
+            <button type="submit" class="btn btn-default pull-right" id="new-ticket">Submit</button>
+            </span>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ticket List -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 tickets">
+        <ul class=" active list-unstyled">
+           for(var i = user.tickets.length - 1; i>=0; i--) { %>
+       
+
+  <!-- Modal for Completed Tickets -->
+  <div class="modal fade" id="CompletedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Add Update:</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal completedForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="ticket-submit">Ticket Completed</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal for delete button -->
+  <div class="modal fade" id="deletedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" id="delete-modal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Delete Ticket</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal deleteForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="answered-submit">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
