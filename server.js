@@ -54,10 +54,13 @@ app.get('/user', function (req, res){
 	res.render('user'); 
 });
 
-// PROFILE PAGE
+// PROFILE PAGE  - CUSTOMER
 app.get('/profile', function (req, res){
 	res.render('profile'); 
 });
+
+
+
 
 // AUTH ROUTES
 
