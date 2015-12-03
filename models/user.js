@@ -22,7 +22,8 @@ var UserSchema = new Schema({
 
 
 UserSchema.plugin(passportLocalMongoose, {
-	populateFields: 'tickets'
+	populateFields: 'tickets', 
+	
 }); 
 
 var User = mongoose.model('User', UserSchema); 

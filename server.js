@@ -63,7 +63,7 @@ app.get('/', function (req, res) {
   if (req.user) {
     res.redirect('/profile');
   } else {
-    res.render('/', { user: req.user });
+    res.render('index', { user: req.user });
   }
 });
 
@@ -100,10 +100,10 @@ app.post('/login', passport.authenticate('local'), function (req, res) {
 });
 
 // log out user
-// app.get('/logout', function (req, res) {
-//   req.logout();
-//   res.redirect('/');
-// });
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
+});
 
 // show user profile page
 app.get('/profile', function (req, res) {
