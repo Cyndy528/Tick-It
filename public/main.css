@@ -41,17 +41,14 @@ img {
 	color: black;
 }
 
-.navbar-header .navbar-brand:hover {
-	color: black;
-}
 .completed .well {
 	opacity: .8;
 }
 .page-header h3, h1 {
-	color: black;
+	color: white;
 	text-shadow: 1px 1px 2px black;
 	margin-top: 60px;
-	font-size: 100px;
+	font-size: 80px;
 }
 .page-header p {
 	color: white;
@@ -97,7 +94,7 @@ input {
 	background: #fff;
 }
 #new-request-input {
-	color: black;
+	color: white;
 }
 
 .alert {
