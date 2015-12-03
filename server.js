@@ -20,7 +20,7 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partial');
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost/tick-it');
+mongoose.connect('mongodb://localhost/ticket');
 
 // require Ticket model
 var Ticket = require('./models/ticket');
@@ -131,7 +131,7 @@ app.get('/api/tickets', function (req, res) {
 });
 
 // create new ticket
-app.ticket('/api/tickets', function (req, res) {
+app.post('/api/tickets', function (req, res) {
   if (req.user) {
     // create new ticket with form data (`req.body`)
     var newTicket = new Ticket(req.body);
