@@ -43,38 +43,42 @@
           <div class="form-group">
             <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="First name...">
+              <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="First name">
             </div>
           </div>
           <div class="form-group">
             <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="last_name" id="inputLastName" placeholder="Last name...">
+              <input type="text" class="form-control" name="last_name" id="inputLastName" placeholder="Last name">
             </div>
           </div>
           <div class='alert' id='alert-sign-up'></div>
           <div class="form-group">
             <label for="inputEmail" class="col-sm-3 control-label">Email</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control required" name="email" id="inputEmail" placeholder="Email...">
+              <input type="text" class="form-control required" name="email" id="inputEmail" placeholder="Email">
             </div>
           </div>
           <div class="form-group">
             <label for="inputPassword" class="col-sm-3 control-label">Password</label>
             <div class="col-sm-9">
-              <input type="password" class="form-control required"name="password" id="inputPassword" placeholder="Create password...">
+              <input type="password" class="form-control required"name="password" id="inputPassword" placeholder="Create password">
             </div>
           </div>
-          <div class="form-group">
-            <label for="inputPassword2" class="col-sm-3 control-label required">Confirm Password</label>
-            <div class="col-sm-9">
-              <input type="password" class="form-control" name="password2" id="inputPassword2" placeholder="Confirm password...">
-            </div>
-          </div>
+           <div class="form-group">
+                <label for="inputPassword" class="col-sm-3 control-label">Type of Account</label>
+                <div class="col-sm-9">
+                <select id="account" name="account" class="form-control">
+                    <option value="Customer">Customer</option> 
+                    <option value="Staff">Staff</option> 
+                </select>
+              </div>
+              </div>
+            </form>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="signUp">Create account</button>
-              
+            <a href = "/profile" button type="submit" class="btn btn-primary" id="signUp">Create account</button></a>
+   
           </div>
         </form>
       </div>

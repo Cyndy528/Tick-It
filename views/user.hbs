@@ -28,53 +28,92 @@
   <br>
   
   
-<!-- Modal -->
-<div class="modal fade" id="viewAllTicketsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">View all Tickets</h4>
+  <!-- Modal to View Tickets -->
+  <div class="modal fade" id="viewAllTicketsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">View All Tickets</h4>
+        </div>
+
+        <div class="modal-body">
+          <form class="form-horizontal completedForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+            </div>
+          <!-- Ticket List -->
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 tickets">
+                <ul class=" active list-unstyled">
+
+
+ <!--               <p> {{#each user.tickets}}
+                  <p><strong>{{completed}}</strong> - {{department}} - {{description}} - {{createdAt}} </p>
+                {{/each}}
+              </div>
+            </div>
+          </div></p>
+            <br>
+            <br>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Close</button>
+            </div>
+          </form>
+        </div>
       </div>
-      <!-- sign up form -->
-      <div class="modal-body">
-        <form class="form-horizontal" id="signUpForm">
-          <div class="form-group">
-            <label for="inputFirstName" class="col-sm-3 control-label">Full Name</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="Full Name">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputDepartment" class="col-sm-3 control-label">Department</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control" name="last_name" id="inputDepartment" placeholder="Department">
-            </div>
-          </div>
-          <div class='alert' id='alert-sign-up'></div>
-          <div class="form-group">
-            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
-            <div class="col-sm-9">
-              <input type="text" class="form-control required" name="email" id="inputDescription" placeholder="Description">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="inputDate" class="col-sm-3 control-label">Date Needed</label>
-            <div class="col-sm-9">
-              <input type="date" class="form-control required"name="date" id="inputDate" placeholder="Date">
-            </div>
-          </div>
-  
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" id="signUp">Create Ticket</button>
+    </div>
+  </div> -->
+
+
+        <!-- list of posts -->
+        <ul class="list-group" id="tickets-list">
+
+          <!-- handlebars template -->
+          <script id="tickets-template" type="text/x-handlebars-template">
+            \{{#each tickets}}
+              <li class="list-group-item post" data-id="\{{_id}}">
+               
+                <span class="label label-default">\{{department}}</span>
+                
               
-          </div>
-        </form>
+                \{{description}}
+                <div class="pull-right">
+
+                  <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{_id}}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  
+                 
+                   <a href="javascript:void(0)" class="delete-post">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </a>
+                </div>
+                
+             
+                <div class="collapse" id="update-\{{_id}}">
+                  <br>
+                  <form class="form-inline update-ticket">
+           
+         <div class="form-group">
+                      <input type="text" name="title" class="form-control" placeholder="Title" value="\{{title}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="description" class="form-control" placeholder="Description" value="\{{description}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="submit" class="btn btn-block btn-default" value="Update">
+                    </div>
+                  </form>
+                </div>
+              </li>
+            \{{/each}}
+          </script>
+        </ul>
       </div>
     </div>
   </div>
-</div>
 
 
 <!-- jquery -->

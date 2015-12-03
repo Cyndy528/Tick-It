@@ -98,25 +98,53 @@
               <div class="col-md-8 col-md-offset-2 tickets">
                 <ul class=" active list-unstyled">
 
+        <!-- list of tickets -->
+        <ul class="list-group" id="tickets-list">
 
-               <p> {{#each user.tickets}}
-                  <p><strong>{{completed}}</strong> - {{department}} - {{description}} - {{createdAt}} </p>
-                {{/each}}
-              </div>
-            </div>
-          </div></p>
-            <br>
-            <br>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Close</button>
-            </div>
-          </form>
-        </div>
+          <!-- handlebars template -->
+          <script id="tickets-template" type="text/x-handlebars-template">
+            \{{#each tickets}}
+              <li class="list-group-item post" data-id="\{{_id}}">
+               
+                <span class="label label-default">\{{department}}</span>
+                
+              
+                \{{description}}
+                <div class="pull-right">
+
+                  <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{_id}}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  
+                 
+                   <a href="javascript:void(0)" class="delete-post">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </a>
+                </div>
+                
+             
+                <div class="collapse" id="update-\{{_id}}">
+                  <br>
+                  <form class="form-inline update-ticket">
+           
+         <div class="form-group">
+                      <input type="text" name="title" class="form-control" placeholder="Title" value="\{{title}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="description" class="form-control" placeholder="Description" value="\{{description}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="submit" class="btn btn-block btn-default" value="Update">
+                    </div>
+                  </form>
+                </div>
+              </li>
+            \{{/each}}
+          </script>
+        </ul>
       </div>
     </div>
   </div>
-  
-
 
 <!-- jquery -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>

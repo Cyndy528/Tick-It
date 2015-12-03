@@ -21,7 +21,7 @@ $(function() {
       // helper function to render all tickets to view
       var render = function() {
         // empty existing tickets from view
-        $ticketList.empty();
+        $ticketsList.empty();
 
         // pass 'allTickets' into the template function
         var ticketsHtml = template({
@@ -265,3 +265,4 @@ $(function() {
           });
 
       });
+    }); 

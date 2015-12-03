@@ -39,9 +39,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // passport config
-passport.use(new LocalStrategy(User.authenticate()));
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
+// passport.use(new LocalStrategy(User.authenticate()));
+// passport.serializeUser(User.serializeUser());
+// passport.deserializeUser(User.deserializeUser());
 
 
 // HOMEPAGE ROUTE
@@ -49,17 +49,15 @@ app.get('/', function (req, res){
 	res.render('index', { user: req.user}); 
 }); 
 
-// USER PAGE 
+// USER PAGE - STAFF
 app.get('/user', function (req, res){
-	res.render('user'); 
+	res.render('user', { user: req.user }); 
 });
 
 // PROFILE PAGE  - CUSTOMER
 app.get('/profile', function (req, res){
-	res.render('profile'); 
+	res.render('profile', { user: req.user}); 
 });
-
-
 
 
 // AUTH ROUTES
