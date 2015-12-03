@@ -144,6 +144,14 @@ $(function() {
         });
       }
 
+    // Route to Profile Page 
+   $(function () {
+    $("#account").change(function () {
+        location.href = $(this).val();
+    });
+});
+
+
       //When sign up form submitted
       $('#signUpForm').on('submit', function(e) {
         e.preventDefault();

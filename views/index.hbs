@@ -68,9 +68,9 @@
            <div class="form-group">
                 <label for="inputPassword" class="col-sm-3 control-label">Type of Account</label>
                 <div class="col-sm-9">
-                <select id="account" name="account" class="form-control">
-                    <option value="Customer">Customer</option> 
-                    <option value="Staff">Staff</option> 
+                <select id="account" name="account" onchange="javascript:location.href = this.value;" class="form-control">
+                    <option value="/profile">Customer</option> 
+                    <option value="/user">Staff</option> 
                 </select>
               </div>
               </div>
