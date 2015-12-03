@@ -1,22 +1,164 @@
 {{> header}}
 
-  <div class="container">
-    <div class="row text-center">
-      <div class="col-md-6 col-md-offset-3">
-        <h2>Welcome, {{user.username}}!</h2>
-        <p>This is your profile page.</p>
-        <hr>
-        {{#each user.posts}}
+<br>
+<br>
+<br>
+<br> 
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+  <div class="welcome-info text-center">
+    <h1>My Tickets</h1>
+    <br>
+    <br>
+ <!-- button trigger sign up modal and to view sample page -->
+      <div class='container'>
+        <div class='row'>
+          <div class='col-md-8 col-md-offset-2 buttons'>
+            <span><a class="btn btn-default btn-lg btn-xl" id="view-button" data-toggle="modal" data-target="#viewModal" role="button">View</a>
+
+            <span><a class="btn btn-default btn-lg btn-xl" id="newticket-button" data-toggle="modal" data-target="#newTicketModal" role="button">Create a New Ticket</a>
+          </div>
+        </div>
+      </div>    
+  </div> 
+  <br>
+  <br>
+  <br>
+
+<!-- Modal -->
+<div class="modal fade" id="newTicketModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">New Ticket</h4>
+      </div>
+      <!-- sign up form -->
+      <div class="modal-body">
+        <form class="form-horizontal" id="myTicketForm">
+          <div class="form-group">
+            <label for="inputFirstName" class="col-sm-3 control-label">Full Name</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="Full Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDepartment" class="col-sm-3 control-label">Department</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control" name="last_name" id="inputDepartment" placeholder="Department">
+            </div>
+          </div>
+          <div class='alert' id='alert-sign-up'></div>
+          <div class="form-group">
+            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
+            <div class="col-sm-9">
+              <input type="text" class="form-control required" name="email" id="inputDescription" placeholder="Description">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="inputDate" class="col-sm-3 control-label">Date</label>
+            <div class="col-sm-9">
+              <input type="date" class="form-control required"name="date" id="inputDate" placeholder="Date">
+            </div>
+          </div>
+  
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="signUp">Create Ticket</button>
+              
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+       <p> {{#each user.tickets}}
           <p><strong>{{completed}}</strong> - {{department}} - {{description}} - {{createdAt}} </p>
         {{/each}}
       </div>
     </div>
+  </div></p>
+    <br>
+    <br>
+  
+
+
+
+  <!-- Ticket List -->
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8 col-md-offset-2 tickets">
+        <ul class=" active list-unstyled">
+
+  <!-- Modal for Completed Tickets -->
+  <div class="modal fade" id="CompletedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Add Update:</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal completedForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="ticket-submit">Ticket Completed</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- jquery -->
-  <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+  <!-- Modal for delete button -->
+  <div class="modal fade" id="deletedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" id="delete-modal" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Delete Ticket</h4>
+        </div>
+        <div class="modal-body">
+          <form class="form-horizontal deleteForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+              <div class="col-sm-9">
+                
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" id="close-modal" data-dismiss="modal">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="answered-submit">Delete</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- jquery -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
 
   <!-- bootstrap js -->
-  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+  <!-- handlebars -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.3/handlebars.min.js"></script>
+
+  <script type="text/javascript" src="main.js"></script>
 </body>
-</html>
+</html

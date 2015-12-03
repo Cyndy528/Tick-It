@@ -54,6 +54,10 @@ app.get('/user', function (req, res){
 	res.render('user'); 
 });
 
+// PROFILE PAGE
+app.get('/profile', function (req, res){
+	res.render('profile'); 
+});
 
 // AUTH ROUTES
 
@@ -63,7 +67,7 @@ app.get('/', function (req, res) {
   if (req.user) {
     res.redirect('/profile');
   } else {
-    res.render('index', { user: req.user });
+    res.render('profile', { user: req.user });
   }
 });
 
@@ -84,18 +88,17 @@ app.post('/', function (req, res) {
   }
 });
 
-// show login view
-app.get('/login', function (req, res) {
-  // if user is logged in, don't let them see login view
+// show profile view
+app.get('/profile', function (req, res) {
   if (req.user) {
     res.redirect('/profile');
   } else {
-    res.render('login', { user: req.user });
+    res.render('profile', { user: req.user });
   }
 });
 
 // log in user
-app.post('/login', passport.authenticate('local'), function (req, res) {
+app.post('/profile', passport.authenticate('local'), function (req, res) {
   res.redirect('/profile');
 });
 
@@ -111,7 +114,7 @@ app.get('/profile', function (req, res) {
   if (req.user) {
     res.render('profile', { user: req.user });
   } else {
-    res.redirect('/login');
+    res.redirect('/index');
   }
 });
 
