@@ -151,7 +151,7 @@ function checkAuth() {
 
 //When sign up form submitted
 $('#signUpForm').on('submit', function(e) {
-  e.preventDefault();
+  event.preventDefault();
   if ($('#signUpForm').valid()) {
     console.log("form submitted");
     var user = $(this).serialize();

@@ -13,6 +13,7 @@ app.use(express.static(__dirname +'/public'));
 
 // set hbs as server view engine 
 app.set('view engine', 'hbs'); 
+hbs.registerPartials(__dirname + '/views/partial');
 
 // connect to mongodb
 mongoose.connect(
@@ -24,97 +25,122 @@ mongoose.connect(
 // require Ticket model
 var Ticket = require('./models/ticket');
 
+// require User model
+var User = require ('./models/user'); 
+
 // HOMEPAGE ROUTE
 
 app.get('/', function (req, res){
 	res.render('index'); 
 }); 
 
+// USER PAGE 
 app.get('/user', function (req, res){
 	res.render('user'); 
 });
+
+
 // API ROUTES 
 
 // get all tickets 
 app.get('/api/tickets', function (req, res) {
-		res.json({ tickets: tickets});
+	// find all tickets in db
+	Ticket.find(function(err, allTickets){
+		if (err) {
+			res.status(500).json({ error: err.message }); 
+		} else {
+			res.json({ tickets: allTickets}); 
+		}
+	});
 });
 
-// create a ticket 
+// create a new ticket 
 app.post('/api/tickets', function (req, res) {
-	db.User.findById( req.params.id, function (err, user) {
-			if (err); 
-			// add ticket to array 
-			user.tickets.push(req.body);
-			// set sequential id 
-			var tickets = user.tickets[user.tickets.length -1];
-			user.save(function (err) {
-				if (err); 
-				// send ticket at JSON response
-				res.json(ticket);
+	// create new ticket form data ('req.body')
+	var newTicket = new Ticket(req.body); 
 
-			});		
-		
+	// save new ticket in db
+	newTicket.save(function (err, savedTicket) {
+		if (err){
+		} else {
+			res.json(savedTicket); 
+		}	
 	});	
 });
 
 // get one ticket 
 app.get('/api/tickets/:id', function (req, res) {
 	// get ticket id 
-	var TicketId = parseInt(req.params.id);
-	// find ticket by id 
-	var foundTicket = tickets.filter(function (ticket) {
-	return ticket._id === ticketId;
-	})[0];
-	// send foundTicket as JSON response 
-	res.json(foundTicket);
+	var TicketId = req.params.id;
+	// find ticket in db by id 
+	Ticket.findOne({ _id: ticketId }, function (err, foundTicket) {
+		if (err) {
+			if (err.name === "CastError") {
+				res.status(404).json({ error: "Nothing found by this ID." }); 
+			} else {
+				res.status(500).json({ erro: err.message }); 
+			}
+			} else {
+				res.json(foundTicket); 
+			}
+		}); 
 });
 
 
 // update a ticket 
-app.put('/api/users/:userid/tickets/:id', function (req, res) {
+app.put('/api/users/:id', function (req, res) {
 	// get ticket id 
-	db.User.findById( req.params.userid, function (err, user) {
-	// find ticket to update by id
-	var ticketToUpdate = ticket.filter(function (todo){
-		return ticket._id === ticketId; 
-	}) [0]; 
+	var ticketId = req.params.id; 
 
-	// update the ticket's status
-	ticketToUpdate.task = req.body.completed; 
+	// find ticket in db by id
+	Ticket.findOne ({ _id: ticketId }, function (err, foundTicket){
+		if (err){
+			res.status(500).json({ error: err.message }); 
+		} else {
+			//update the ticket's attributes
+			foundTicket.completed = req.body.completed; 
 
-	// update the ticket's department
-	ticketToUpdate.department = req.body.department; 
+			// update the ticket's department
+			foundTicket.department = req.body.department; 
 
-	// update the ticket's description
-	ticketToUpdate.description = req.body.description; 
+			// update the ticket's description
+			foundTicket.description = req.body.description; 
 
-	// update the ticket's date 
-	ticketToUpdate.createdAt = req.body.createdAt; 
+			// update the ticket's date 
+			foundTicket.createdAt = req.body.createdAt; 
 
-	// send back updated ticket 
-	res.json(ticketToUpdate); 
-	}); 
-
-}); 
+			// save updated Ticket in db
+			foundTicket.save(function (err, savedTicket){
+				if (err){
+					res.status(500).json ({ error: err.message }); 
+				} else {
+					res.json(savedTicket); 
+		       }
+		     });
+		    }
+		 });
+	});
 
 // delete a ticket 
-app.delete('/api/users/:userid/tickets/:id', function (req, res) {
-	// get ticket id 
-	db.User.findById( req.params.userid, function (err, user) {
-	// find ticket to delete by its id
-	var ticketToDelete = tickets.filter(function(ticket){
-		return ticket._id ===ticketId; 
-	})[0]; 
+app.delete('/api/tickets/:id', function (req, res) {
+	// get ticket id
+	var ticketId = req.params.id; 
 
-	// remove ticket form 'tickets' array
-	tickets.splice(tickets.indexOf(ticketToDelete), 1); 
-
-	// send back deleted ticket
-	res.json(ticketToDelete); 
+	// find ticket in db by id and remove 
+	Ticket.findOneAndRemove ({ _id: TicketId }, function (err, deletedTicket) {
+		if (err) {
+			res.status(500).json({ error: err.message }); 
+		} else {
+			res.json(deletedTicket); 
+		}
+		}); 
 	}); 
-}); 
-	
+
+
+
+
+
+
 // create a user
 app.post('/api/users', function(req, res) {
 	var user = req.body;
@@ -146,33 +172,61 @@ app.post('/login', function (req, res) {
 });
 
 
-//validations
-// $('#signUpForm').validate({
-// rules: {
-//   username: {
-//         required: true,
-//         email: true
-//       },
-//   password: {
-//         required: true,
-//         minlength: 6
-//       },
-//   password2: {
-//         required: true,
-//         minlength: 6,
-//         equalTo: '#inputPassword'
 
-//       }
+//route for user's page
+app.get('/users/:id', function(req, res) {
+	if (req.params.id == "demo") {
+		res.render("user-show", {demoUser: demoUser});
+	} else {
+		db.User.findById(req.params.id, function (err, user) {
+			if (err) console.log(err);
+			console.log("user on page is: ", user);
+			res.render("user-show", {user: user});
 
-//       }
+		});		
+	}
+  
+});
 
-//   });
+//route for creating a user
+app.post('/api/users', function(req, res) {
+	var user = req.body;
+	db.User.createSecure(user, function(err, user) {
+		if (err) {
+			console.log(err);
+			res.status(404).send("<p>Error</p>");
+		} else {
+			req.session.user = user;
+			res.cookie('userId', user._id);
+			console.log("user is: " + user);
+			res.json(user);
+	}
+	});
+});
 
-// log out 
-// app.get('/logout', function (req, res) {
-	// send back message 
-	// res.json({ msg: "You have logged out!" });
-// });
+//route for check if current user
+app.get('/api/current-user', function (req, res) {
+	console.log("found current user");
+	res.json({ user: req.session.user, userId: req.cookies.userId });
+});
+
+//route for logging in
+app.post('/api/login', function (req, res) {
+	var user = req.body;
+	User.authenticate(user.email, user.password, function (err, authUser) {
+		console.log("error, authUser", err, authUser);
+		if (!authUser) {
+			res.status(404).send("<p>Error</p>");
+		} else {
+			console.log("no if statement");	
+			req.session.user = authUser;
+			res.cookie('authUserId', authUser._id);	
+			res.json(authUser);
+		}
+	});
+});
+
+
 
 
 // start server on localhost:3000 

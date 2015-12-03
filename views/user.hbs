@@ -1,6 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
+
+{{> header}}
 <nav class="navbar navbar-fixed-top navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -44,12 +43,13 @@
 </head>
 <body>
 
-
+<br> 
+<br> 
   <!-- heading -->
   <div class="page-header">
   <!-- show if owner -->
     <div class="container text-center owner">
-        <h1>Welcome!</h1>
+        <h1>Enter Your Tick-it!</h1>
 
   <!-- input forms -->
   <div class="container">
@@ -71,8 +71,6 @@
     <div class="row">
       <div class="col-md-8 col-md-offset-2 tickets">
         <ul class=" active list-unstyled">
-           for(var i = user.tickets.length - 1; i>=0; i--) { %>
-       
 
   <!-- Modal for Completed Tickets -->
   <div class="modal fade" id="CompletedModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -122,5 +120,3 @@
       </div>
     </div>
   </div>
-</body>
-</html>
