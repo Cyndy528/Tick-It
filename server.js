@@ -4,6 +4,10 @@ var express = require ('express'),
 	bodyParser = require('body-parser'); 
 	mongoose = require('mongoose'); 
 	hbs = require('hbs'); 
+    cookieParser = require('cookie-parser'),
+    session = require('express-session'),
+    passport = require('passport'),
+    LocalStrategy = require('passport-local').Strategy;
 
 // configure body-parser (for form data)
 app.use(bodyParser.urlencoded({ extended: true})); 
@@ -16,11 +20,7 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partial');
 
 // connect to mongodb
-mongoose.connect(
-  process.env.MONGOLAB_URI ||
-  process.env.MONGOHQ_URL ||
-  'mongodb://localhost/ticket-app'
-);
+mongoose.connect('mongodb://localhost/tick-it');
 
 // require Ticket model
 var Ticket = require('./models/ticket');
@@ -28,10 +28,25 @@ var Ticket = require('./models/ticket');
 // require User model
 var User = require ('./models/user'); 
 
-// HOMEPAGE ROUTE
+// middleware for auth
+app.use(cookieParser());
+app.use(session({
+  secret: 'supersecretkey',
+  resave: false,
+  saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
+// passport config
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+// HOMEPAGE ROUTE
 app.get('/', function (req, res){
-	res.render('index'); 
+	res.render('index', { user: req.user}); 
 }); 
 
 // USER PAGE 
@@ -40,194 +55,166 @@ app.get('/user', function (req, res){
 });
 
 
-// API ROUTES 
+// AUTH ROUTES
 
-// get all tickets 
+// show signup view
+app.get('/', function (req, res) {
+  // if user is logged in, don't let them see signup view
+  if (req.user) {
+    res.redirect('/profile');
+  } else {
+    res.render('/', { user: req.user });
+  }
+});
+
+// sign up new user, then log them in
+// hashes and salts password, saves new user to db
+app.post('/', function (req, res) {
+  // if user is logged in, don't let them sign up again
+  if (req.user) {
+    res.redirect('/profile');
+  } else {
+    User.register(new User({ username: req.body.username }), req.body.password,
+      function (err, newUser) {
+        passport.authenticate('local')(req, res, function () {
+          res.redirect('/profile');
+        });
+      }
+    );
+  }
+});
+
+// show login view
+app.get('/login', function (req, res) {
+  // if user is logged in, don't let them see login view
+  if (req.user) {
+    res.redirect('/profile');
+  } else {
+    res.render('login', { user: req.user });
+  }
+});
+
+// log in user
+app.post('/login', passport.authenticate('local'), function (req, res) {
+  res.redirect('/profile');
+});
+
+// log out user
+// app.get('/logout', function (req, res) {
+//   req.logout();
+//   res.redirect('/');
+// });
+
+// show user profile page
+app.get('/profile', function (req, res) {
+  // only show profile if user is logged in
+  if (req.user) {
+    res.render('profile', { user: req.user });
+  } else {
+    res.redirect('/login');
+  }
+});
+
+
+// API ROUTES
+
+// get all tickets
 app.get('/api/tickets', function (req, res) {
-	// find all tickets in db
-	Ticket.find(function(err, allTickets){
-		if (err) {
-			res.status(500).json({ error: err.message }); 
-		} else {
-			res.json({ tickets: allTickets}); 
-		}
-	});
+  // find all tickets in db
+  Ticket.find(function (err, allTickets) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json({ tickets: allTickets });
+    }
+  });
 });
 
-// create a new ticket 
-app.post('/api/tickets', function (req, res) {
-	// create new ticket form data ('req.body')
-	var newTicket = new Ticket(req.body); 
+// create new ticket
+app.ticket('/api/tickets', function (req, res) {
+  if (req.user) {
+    // create new ticket with form data (`req.body`)
+    var newTicket = new Ticket(req.body);
 
-	// save new ticket in db
-	newTicket.save(function (err, savedTicket) {
-		if (err){
-		} else {
-			res.json(savedTicket); 
-		}	
-	});	
+    // save new ticket in db
+    newTicket.save(function (err, savedTicket) {
+      if (err) {
+        res.status(500).json({ error: err.message });
+      } else {
+        req.user.tickets.push(savedTicket);
+        req.user.save();
+        res.json(savedTicket);
+      }
+    });
+  } else {
+    res.status(401).json({ error: 'Unauthorized.' });
+  }
 });
 
-// get one ticket 
+// get one ticket
 app.get('/api/tickets/:id', function (req, res) {
-	// get ticket id 
-	var TicketId = req.params.id;
-	// find ticket in db by id 
-	Ticket.findOne({ _id: ticketId }, function (err, foundTicket) {
-		if (err) {
-			if (err.name === "CastError") {
-				res.status(404).json({ error: "Nothing found by this ID." }); 
-			} else {
-				res.status(500).json({ erro: err.message }); 
-			}
-			} else {
-				res.json(foundTicket); 
-			}
-		}); 
+  // get ticket id from url params (`req.params`)
+  var ticketId = req.params.id;
+
+  // find ticket in db by id
+  Ticket.findOne({ _id: ticketId }, function (err, foundTicket) {
+    if (err) {
+      if (err.name === "CastError") {
+        res.status(404).json({ error: "Nothing found by this ID." });
+      } else {
+        res.status(500).json({ error: err.message });
+      }
+    } else {
+      res.json(foundTicket);
+    }
+  });
 });
 
+// update ticket
+app.put('/api/tickets/:id', function (req, res) {
+  // get ticket id from url params (`req.params`)
+  var ticketId = req.params.id;
 
-// update a ticket 
-app.put('/api/users/:id', function (req, res) {
-	// get ticket id 
-	var ticketId = req.params.id; 
+  // find ticket in db by id
+  Ticket.findOne({ _id: ticketId }, function (err, foundTicket) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      // update the ticket's attributes
+      foundTicket.completed = req.body.completed;
+      foundTicket.department = req.body.department;
+      foundTicket.description = req.body.description;
+      foundTicket.createdAt = req.body.createdAt; 
 
-	// find ticket in db by id
-	Ticket.findOne ({ _id: ticketId }, function (err, foundTicket){
-		if (err){
-			res.status(500).json({ error: err.message }); 
-		} else {
-			//update the ticket's attributes
-			foundTicket.completed = req.body.completed; 
+      // save updated ticket in db
+      foundTicket.save(function (err, savedTicket) {
+        if (err) {
+          res.status(500).json({ error: err.message });
+        } else {
+          res.json(savedTicket);
+        }
+      });
+    }
+  });
+});
 
-			// update the ticket's department
-			foundTicket.department = req.body.department; 
-
-			// update the ticket's description
-			foundTicket.description = req.body.description; 
-
-			// update the ticket's date 
-			foundTicket.createdAt = req.body.createdAt; 
-
-			// save updated Ticket in db
-			foundTicket.save(function (err, savedTicket){
-				if (err){
-					res.status(500).json ({ error: err.message }); 
-				} else {
-					res.json(savedTicket); 
-		       }
-		     });
-		    }
-		 });
-	});
-
-// delete a ticket 
+// delete ticket
 app.delete('/api/tickets/:id', function (req, res) {
-	// get ticket id
-	var ticketId = req.params.id; 
+  // get ticket id from url params (`req.params`)
+  var ticketId = req.params.id;
 
-	// find ticket in db by id and remove 
-	Ticket.findOneAndRemove ({ _id: TicketId }, function (err, deletedTicket) {
-		if (err) {
-			res.status(500).json({ error: err.message }); 
-		} else {
-			res.json(deletedTicket); 
-		}
-		}); 
-	}); 
-
-
-
-
-
-
-// create a user
-app.post('/api/users', function(req, res) {
-	var user = req.body;
-	// creating a secured account 
-	db.User.createSecure(user, function(err, user) {
-		if (err) {
-			res.status(404).send("<p>Error</p>");
-		} else {
-			console.log("user is: " + user);
-			res.json(newUser);
-	}
-	});
+  // find ticket in db by id and remove
+  Ticket.findOneAndRemove({ _id: ticketId }, function (err, deletedDeleted) {
+    if (err) {
+      res.status(500).json({ error: err.message });
+    } else {
+      res.json(deletedTicket);
+    }
+  });
 });
 
 
-
-// login 
-app.post('/login', function (req, res) {
-	var user = req.body;
-	User.authenticate(user.email, user.password, function (err, authUser) {
-		console.log("error, authUser", err, authUser);
-		// verification of user 
-		if (!authUser) {
-			res.status(404).send("<p>Error</p>");
-		} else {	
-			res.json(authUser);
-		}
-	});
+// listen on port 3000
+app.listen(3000, function() {
+  console.log('server started');
 });
-
-
-
-//route for user's page
-app.get('/users/:id', function(req, res) {
-	if (req.params.id == "demo") {
-		res.render("user-show", {demoUser: demoUser});
-	} else {
-		db.User.findById(req.params.id, function (err, user) {
-			if (err) console.log(err);
-			console.log("user on page is: ", user);
-			res.render("user-show", {user: user});
-
-		});		
-	}
-  
-});
-
-//route for creating a user
-app.post('/api/users', function(req, res) {
-	var user = req.body;
-	db.User.createSecure(user, function(err, user) {
-		if (err) {
-			console.log(err);
-			res.status(404).send("<p>Error</p>");
-		} else {
-			req.session.user = user;
-			res.cookie('userId', user._id);
-			console.log("user is: " + user);
-			res.json(user);
-	}
-	});
-});
-
-//route for check if current user
-app.get('/api/current-user', function (req, res) {
-	console.log("found current user");
-	res.json({ user: req.session.user, userId: req.cookies.userId });
-});
-
-//route for logging in
-app.post('/api/login', function (req, res) {
-	var user = req.body;
-	User.authenticate(user.email, user.password, function (err, authUser) {
-		console.log("error, authUser", err, authUser);
-		if (!authUser) {
-			res.status(404).send("<p>Error</p>");
-		} else {
-			console.log("no if statement");	
-			req.session.user = authUser;
-			res.cookie('authUserId', authUser._id);	
-			res.json(authUser);
-		}
-	});
-});
-
-
-
-
-// start server on localhost:3000 
-app.listen(process.env.PORT || 3000);
