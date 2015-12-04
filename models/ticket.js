@@ -5,7 +5,8 @@ var TicketSchema = new Schema({
 	
     department: String,  
     description: String, 
-    Date: Number
+    Date: Date, 
+    comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}] 
 });
  
 
