@@ -38,7 +38,7 @@ img {
  }
 
 .navbar-header .navbar-brand {
-	color: black;
+	color: white;
 }
 
 .completed .well {
@@ -72,7 +72,10 @@ img {
 
 }
 
-
+#newticket-button {
+	background-color: #BDBDBD; 
+	color: black; 
+}
 .welcome-info p {
 	font-size: 40px;
 	color: white;

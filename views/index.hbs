@@ -11,7 +11,8 @@
 <br>
 <br>
   <div class="welcome-info text-center">
-    <h1>My Tickets</h1>
+    <h1>Tick-it!</h1>
+    <p> A fast and easy way to manage helpdesk tickets!
     <br>
     <br>
  <!-- button trigger sign up modal and to view sample page -->
@@ -84,7 +85,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title" id="myModalLabel">My Tickets</h4>
+          <h4 class="modal-title" id="myModalLabel"> Tickets</h4>
         </div>
 
         <div class="modal-body">
@@ -106,23 +107,14 @@
             \{{#each tickets}}
               <li class="list-group-item post" data-id="\{{_id}}">
                
-                <span class="label label-default">\{{department}}</span>
+                <p><span class="label label-default">\{{department}}</span></p>
                 
               
-                \{{description}}
+                <p>\{{fullName}}</p> 
+
+                <p>\{{description}}</p> <p> \{{dateNeeded}}</p>
                 <div class="pull-right">
 
-                  <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{_id}}">
-                    <span class="glyphicon glyphicon-pencil"></span>
-                  </a>
-                  
-                 
-                   <a href="javascript:void(0)" class="delete-post">
-                    <span class="glyphicon glyphicon-trash"></span>
-                  </a>
-                </div>
-                
-             
                 <div class="collapse" id="update-\{{_id}}">
                   <br>
                   <form class="form-inline update-ticket">
