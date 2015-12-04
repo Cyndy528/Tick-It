@@ -29,14 +29,14 @@ var Ticket = require('./models/ticket');
 var User = require ('./models/user'); 
 
 // middleware for auth
-app.use(cookieParser());
-app.use(session({
-  secret: 'supersecretkey',
-  resave: false,
-  saveUninitialized: false
-}));
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(cookieParser());
+// app.use(session({
+//   secret: 'supersecretkey',
+//   resave: false,
+//   saveUninitialized: false
+// }));
+// app.use(passport.initialize());
+// app.use(passport.session());
 
 // passport config
 // passport.use(new LocalStrategy(User.authenticate()));
@@ -46,17 +46,17 @@ app.use(passport.session());
 
 // HOMEPAGE ROUTE
 app.get('/', function (req, res){
-	res.render('index', { user: req.user}); 
+	res.render('index'); 
 }); 
 
 // USER PAGE - STAFF
 app.get('/user', function (req, res){
-	res.render('user', { user: req.user }); 
+	res.render('user'); 
 });
 
 // PROFILE PAGE  - CUSTOMER
 app.get('/profile', function (req, res){
-	res.render('profile', { user: req.user}); 
+	res.render('profile'); 
 });
 
 
