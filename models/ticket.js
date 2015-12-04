@@ -2,7 +2,6 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema; 
 
 var TicketSchema = new Schema({
-	
     department: String,  
     description: String, 
     Date: Date, 
