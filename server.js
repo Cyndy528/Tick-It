@@ -27,10 +27,10 @@ mongoose.connect(
 );
 
 // require Ticket model
-// var Ticket = require('./models/ticket');
+var Ticket = require('./models/ticket');
 
 // require User model
-// var User = require ('./models/user'); 
+var User = require ('./models/user'); 
 
 // middleware for auth
 // app.use(cookieParser());
