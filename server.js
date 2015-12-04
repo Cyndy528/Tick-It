@@ -7,7 +7,7 @@ var express = require ('express'),
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport');
-    // LocalStrategy = require('passport-local').Strategy;
+    LocalStrategy = require('passport-local').Strategy;
 
 // configure body-parser (for form data)
 app.use(bodyParser.urlencoded({ extended: true})); 
@@ -20,17 +20,17 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partial');
 
 // connect to mongodb
-// mongoose.connect(
-//   process.env.MONGOLAB_URI ||
-//   process.env.MONGOHQ_URL ||
-//   'mongodb://localhost/ticket'
-// );
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/ticket'
+);
 
 // require Ticket model
-// var Ticket = require('./models/ticket');
+var Ticket = require('./models/ticket');
 
 // require User model
-// var User = require ('./models/user'); 
+var User = require ('./models/user'); 
 
 // middleware for auth
 // app.use(cookieParser());
