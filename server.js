@@ -20,7 +20,11 @@ app.set('view engine', 'hbs');
 hbs.registerPartials(__dirname + '/views/partial');
 
 // connect to mongodb
-mongoose.connect('mongodb://localhost/ticket');
+mongoose.connect(
+  process.env.MONGOLAB_URI ||
+  process.env.MONGOHQ_URL ||
+  'mongodb://localhost/ticket'
+);
 
 // require Ticket model
 var Ticket = require('./models/ticket');
