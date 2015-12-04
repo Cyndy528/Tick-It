@@ -6,8 +6,8 @@ var express = require ('express'),
 	hbs = require('hbs'), 
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
-    passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy;
+    passport = require('passport');
+    // LocalStrategy = require('passport-local').Strategy;
 
 // configure body-parser (for form data)
 app.use(bodyParser.urlencoded({ extended: true})); 
@@ -219,6 +219,6 @@ app.get('/profile', function (req, res){
 
 
 // listen on port 3000
-app.listen(3000, function() {
+app.listen(process.env.PORT || 3000, function() {
   console.log('server started');
 });
