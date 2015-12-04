@@ -11,15 +11,16 @@
 <br>
 <br>
   <div class="welcome-info text-center">
-    <h1>Tick-it!</h1>
-    <p>A fast and easy ticketing system!</p>
+    <h1>My Tickets</h1>
     <br>
     <br>
-    <!-- button trigger sign up modal and to view sample page -->
+ <!-- button trigger sign up modal and to view sample page -->
       <div class='container'>
         <div class='row'>
           <div class='col-md-8 col-md-offset-2 buttons'>
-            <span><a class="btn btn-default btn-lg btn-xl" id="sign-button" data-toggle="modal" data-target="#signUpModal" role="button">Create Account</a>
+            <span><a class="btn btn-default btn-lg btn-xl" id="view-button" data-toggle="modal" data-target="#viewModal" role="button">View</a>
+
+            <span><a class="btn btn-default btn-lg btn-xl" id="newticket-button" data-toggle="modal" data-target="#newTicketModal" role="button">Create a New Ticket</a>
           </div>
         </div>
       </div>    
@@ -27,58 +28,48 @@
   <br>
   <br>
   <br>
-  
-  
+
 <!-- Modal -->
-<div class="modal fade" id="signUpModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="newTicketModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Create an account</h4>
+        <h4 class="modal-title" id="myModalLabel">New Ticket</h4>
       </div>
-      <!-- sign up form -->
+      <!-- Ticket form -->
       <div class="modal-body">
-        <form class="form-horizontal" id="signUpForm">
+        <form class="form-horizontal" id="myTicketForm">
           <div class="form-group">
-            <label for="inputFirstName" class="col-sm-3 control-label">First Name</label>
+            <label for="inputFirstName" class="col-sm-3 control-label">Full Name</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="first_name" id="inputFirstName" placeholder="First name">
+              <input type="text" class="form-control" name="fullName" id="inputFirstName" placeholder="Full Name">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputLastName" class="col-sm-3 control-label">Last Name</label>
+            <label for="inputDepartment" class="col-sm-3 control-label">Department</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control" name="last_name" id="inputLastName" placeholder="Last name">
+              <input type="text" class="form-control" name="department" id="inputDepartment" placeholder="Department">
             </div>
           </div>
           <div class='alert' id='alert-sign-up'></div>
           <div class="form-group">
-            <label for="inputEmail" class="col-sm-3 control-label">Email</label>
+            <label for="inputDescription" class="col-sm-3 control-label">Description</label>
             <div class="col-sm-9">
-              <input type="text" class="form-control required" name="email" id="inputEmail" placeholder="Email">
+              <input type="text" class="form-control required" name="description" id="inputDescription" placeholder="Description">
             </div>
           </div>
           <div class="form-group">
-            <label for="inputPassword" class="col-sm-3 control-label">Password</label>
+            <label for="inputDate" class="col-sm-3 control-label">Date Needed</label>
             <div class="col-sm-9">
-              <input type="password" class="form-control required"name="password" id="inputPassword" placeholder="Create password">
+              <input type="date" class="form-control required"name="dateNeeded" id="inputDate" placeholder="Date Needed">
             </div>
           </div>
-           <div class="form-group">
-                <label for="inputPassword" class="col-sm-3 control-label">Type of Account</label>
-                <div class="col-sm-9">
-                <select id="account" name="account" onchange="javascript:location.href = this.value;" class="form-control">
-                    <option value="/profile">Customer</option> 
-                    <option value="/user">Staff</option> 
-                </select>
-              </div>
-              </div>
-            </form>
+  
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <a href = "/profile" button type="submit" class="btn btn-primary" id="signUp">Create account</button></a>
-   
+            <button type="submit" class="btn btn-primary" id="signUp">Create Ticket</button>
+              
           </div>
         </form>
       </div>
@@ -86,6 +77,74 @@
   </div>
 </div>
 
+
+  <!-- Modal to View Tickets -->
+  <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">My Tickets</h4>
+        </div>
+
+        <div class="modal-body">
+          <form class="form-horizontal completedForm">
+            <div class="form-group">
+              <label for="inputCompleted" class="col-sm-3 control-label"></label>
+            </div>
+          <!-- Ticket List -->
+          <div class="container">
+            <div class="row">
+              <div class="col-md-8 col-md-offset-2 tickets">
+                <ul class=" active list-unstyled">
+
+        <!-- list of tickets -->
+        <ul class="list-group" id="tickets-list">
+
+          <!-- handlebars template -->
+          <script id="tickets-template" type="text/x-handlebars-template">
+            \{{#each tickets}}
+              <li class="list-group-item post" data-id="\{{_id}}">
+               
+                <span class="label label-default">\{{department}}</span>
+                
+              
+                \{{description}}
+                <div class="pull-right">
+
+                  <a href="javascript:void(0)" data-toggle="collapse" data-target="#update-\{{_id}}">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                  </a>
+                  
+                 
+                   <a href="javascript:void(0)" class="delete-post">
+                    <span class="glyphicon glyphicon-trash"></span>
+                  </a>
+                </div>
+                
+             
+                <div class="collapse" id="update-\{{_id}}">
+                  <br>
+                  <form class="form-inline update-ticket">
+           
+         <div class="form-group">
+                      <input type="text" name="title" class="form-control" placeholder="Title" value="\{{title}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="text" name="description" class="form-control" placeholder="Description" value="\{{description}}">
+                    </div>
+                    <div class="form-group">
+                      <input type="submit" class="btn btn-block btn-default" value="Update">
+                    </div>
+                  </form>
+                </div>
+              </li>
+            \{{/each}}
+          </script>
+        </ul>
+      </div>
+    </div>
+  </div>
 
 <!-- jquery -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
@@ -98,4 +157,4 @@
 
   <script type="text/javascript" src="main.js"></script>
 </body>
-</html>
+</html

@@ -2,10 +2,11 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema; 
 
 var TicketSchema = new Schema({
-    department: String,  
+    fullName: String,
+    department: String,   
     description: String, 
-    Date: Date, 
-    comments: [{type: Schema.Types.ObjectId, ref: 'Comment'}] 
+    dateNeeded: String 
+  
 });
  
 

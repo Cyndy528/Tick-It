@@ -2,69 +2,70 @@
 $(function() {
 
       // base API route
-      // var baseUrl = '/api/tickets';
+      var baseUrl = '/api/tickets';
 
-      // // array to hold ticket data 
-      // var allTickets = [];
+      // array to hold ticket data 
+      var allTickets = [];
 
-      // // element to display list of tickets
-      // var $ticketsList = $('#tickets-list');
+      // element to display list of tickets
+      var $ticketsList = $('#tickets-list');
 
-      // // form to create new ticket
-      // var $createTicket = $('#create-ticket');
+      // form to create new ticket
+      var $myTicketForm = $('#myTicketForm');
 
-      // // compile handlebars template 
-      // var source = $('#tickets-template').html();
-      // var template = Handlebars.compile(source);
+      // compile handlebars template 
+      var source = $('#tickets-template').html();
+      var template = Handlebars.compile(source);
 
 
-      // // helper function to render all tickets to view
-      // var render = function() {
-      //   // empty existing tickets from view
-      //   $ticketsList.empty();
+      // helper function to render all tickets to view
+      var render = function() {
+        // empty existing tickets from view
+        $ticketsList.empty();
 
-      //   // pass 'allTickets' into the template function
-      //   var ticketsHtml = template({
-      //     tickets: allTickets
-      //   });
+        // pass 'allTickets' into the template function
+        var ticketsHtml = template({
+          tickets: allTickets
+        });
 
-      //   // append html to the view
-      //   $ticketsList.append(ticketsHtml);
-      // };
+        // append html to the view
+        $ticketsList.append(ticketsHtml);
+      };
 
       // // GET all tickets on page load
-      // $.get(baseUrl, function(data) {
-      //   console.log(data);
+      $.get(baseUrl, function(data) {
+        console.log(data);
 
-      //   // set 'allTickets' to ticket data from API
-      //   allTickets = data.tickets;
+        // set 'allTickets' to ticket data from API
+        allTickets = data.tickets;
 
-      //   // render all tickets to view
-      //   render();
-      // });
+        // render all tickets to view
+        render();
+      });
 
-      // // listen for submit on form 
-      // $createTicket.on('submit', function(event) {
-      //   event.preventDefault();
+      // listen for submit on form 
+      $myTicketForm.on('submit', function(event) {
+        event.preventDefault();
 
-      //   // serialize form data
-      //   var newTicket = $(this).serialize();
+        // serialize form data
+        var newTicket = $(this).serialize();
 
-      //   // POST request to create new ticket
-      //   $.post(baseUrl, newTicket, function(data) {
-      //     console.log(data);
+        // POST request to create new ticket
+        $.post(baseUrl, newTicket, function(data) {
+          console.log(data);
 
-      //     // add new ticket to 'allTickets'
-      //     allTickets.push(data);
+          // add new ticket to 'allTickets'
+          allTickets.push(data);
 
-      //     // render all tickets to view
-      //     render();
-      //   });
+          // render all tickets to view
+          render(); 
+        });
 
-      //   // reset the form 
-      //   $createTicket[0].reset();
-      //   $createTicket.find('input').first().focus();
-      // });
+        // reset the form 
+        $myTicketForm[0].reset();
+        $myTicketForm.find('input').first().focus();
+        $('#newTicketModal').modal('toggle');
+      });
 
       // add event-handlers to tickets for updating/deleting
       // for update: submit event '.update-ticket' form 
