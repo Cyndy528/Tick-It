@@ -1,9 +1,9 @@
 // require express and other modules 
 var express = require ('express'), 
 	app = express(), 
-	bodyParser = require('body-parser'); 
-	mongoose = require('mongoose'); 
-	hbs = require('hbs'); 
+	bodyParser = require('body-parser'), 
+	mongoose = require('mongoose'),
+	hbs = require('hbs'), 
     cookieParser = require('cookie-parser'),
     session = require('express-session'),
     passport = require('passport'),
