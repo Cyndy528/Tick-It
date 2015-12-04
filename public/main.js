@@ -228,49 +228,4 @@ $(function() {
 
 
 
-      //When the ticket has been completed
-      $('.ticketForm').on('submit', function(e) {
-        e.preventDefault();
-        var ticketId = $(this).attr('data-id');
-        console.log("ticket form has been submitted");
 
-        var userId = $('#new-ticket-input').attr('data-id');
-        var formData = $('#inputCompleted').serialize();
-        var update = $('#inputCompleted').val();
-        console.log("comment is: " + formData);
-        console.log("ticketId is: " + ticketId);
-        $.ajax({
-          url: '/api/users/' + userId + '/tickets/' + ticketId,
-          type: "PUT",
-          data: formData
-        })
-        .done(function(data) {
-          console.log("Ticket has been completed");
-
-        });
-      });   
-
-      //Button for completed tickets
-        $('.tickets').on('click', '.count', function() {
-          console.log("count button clicked");
-          var ticketRequest = $(this).closest('li');
-          var userId = $('#new-ticket-input').attr('data-id');
-          console.log("user id is: " + userId);
-          var ticketId = ticketRequest.attr('data-id');
-          console.log("ticketId is: " + ticketId);
-            var num = ticketRequest.find('span.ticket-count').text();
-            console.log('num value is: ', num);
-            var numInt = parseInt(num, 10);
-            numInt++;
-            numString = numInt.toString();
-            num = ticketRequest.find('span.ticket-count').text(numString);
-
-            $.ajax({
-              url: '/api/user/' + userId + '/tickets/count/' + ticketId,
-              type: "PUT"
-            })
-            .done(function(data) {   
-          });
-
-      });
-    }); 

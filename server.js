@@ -45,7 +45,7 @@ app.use(passport.session());
 
 
 // HOMEPAGE ROUTE
-app.get('/', function (req, res){
+app.get('index', function (req, res){
 	res.render('index', { user: req.user}); 
 }); 
 
@@ -63,7 +63,7 @@ app.get('/profile', function (req, res){
 // AUTH ROUTES
 
 // show signup view
-app.get('/', function (req, res) {
+app.get('index', function (req, res) {
   // if user is logged in, don't let them see signup view
   if (req.user) {
     res.redirect('/profile');
