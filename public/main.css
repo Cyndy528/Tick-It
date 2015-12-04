@@ -76,6 +76,11 @@ img {
 	background-color: #BDBDBD; 
 	color: black; 
 }
+
+#tickets-list {
+	font-size: 14px; 
+}
+
 .welcome-info p {
 	font-size: 40px;
 	color: white;
