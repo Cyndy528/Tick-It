@@ -75,10 +75,12 @@ img {
 #newticket-button {
 	background-color: #BDBDBD; 
 	color: black; 
+	outline: black solid;
 }
 
 #tickets-list {
-	font-size: 14px; 
+	font-size: 18px; 
+
 }
 
 .welcome-info p {
